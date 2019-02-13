@@ -39,3 +39,17 @@ apt-get install -yq htop nano nload zip screen python
 ordner=$(readlink -f "$0" | rev | cut -d"/" -f2- | rev)
 mkdir $ordner/ubuntu-bench-temp
 cd $ordner/ubuntu-bench-temp/
+
+
+# --- Benchmarks ---
+
+#Speedtest
+wget -O speedtest-cli --no-check-certificate https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
+chmod a+x speedtest-cli
+speedserver=`./speedtest-cli --list | tail -n +2 | head -n 15 | cut -d")" -f1 | tr -d ' '`
+for server in $speedserver; do
+	./speedtest-cli --csv --csv-delimiter ";" --no-upload --server $server >> speedtest_download.log
+done
+for server in $speedserver; do
+	./speedtest-cli --csv --csv-delimiter ";" --no-download --server $server >> speedtest_upload.log
+done
