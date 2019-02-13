@@ -34,3 +34,8 @@ fi
 
 #Abhängigkeiten installieren
 apt-get install -yq htop nano nload zip screen python
+
+#Temp Ordner erstellen
+ordner=$(readlink -f "$0" | rev | cut -d"/" -f2- | rev)
+mkdir $ordner/ubuntu-bench-temp
+cd $ordner/ubuntu-bench-temp/
