@@ -48,24 +48,24 @@ wget -O speedtest-cli --no-check-certificate https://raw.githubusercontent.com/s
 chmod a+x speedtest-cli
 speedserver=`./speedtest-cli --list | tail -n +2 | head -n 15 | cut -d")" -f1 | tr -d ' '`
 for server in $speedserver; do
-	./speedtest-cli --csv --csv-delimiter ";" --no-upload --server $server >> speedtest_download.log
+	./speedtest-cli --csv --csv-delimiter ";" --no-upload --server $server | tee -a speedtest_download.log
 done
 for server in $speedserver; do
-	./speedtest-cli --csv --csv-delimiter ";" --no-download --server $server >> speedtest_upload.log
+	./speedtest-cli --csv --csv-delimiter ";" --no-download --server $server | tee -a speedtest_upload.log
 done
 
 #Ram Test
-sysbench --test=memory --num-threads=1 --memory-block-size=1M --memory-total-size=10000G run > sysbench_memory_test.log
+sysbench --test=memory --num-threads=1 --memory-block-size=1M --memory-total-size=10000G run | tee -a sysbench_memory_test.log
 
 #Festplatten Test
 mount=`df -h / | tail -n +2 | cut -d" " -f1`
 round=0
 while [ $round -lt 5 ]; do
-	hdparm -tT --direct $mount >> hdparm.log
+	hdparm -tT --direct $mount | tee -a hdparm.log
 	round=$(( $round + 1 ))
 done
 
 #Unixbench
 git clone https://github.com/kdlucas/byte-unixbench.git
 cd byte-unixbench/UnixBench/
-./Run >> unixbench.log
+./Run | tee -a unixbench.log
