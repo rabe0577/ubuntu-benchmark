@@ -33,7 +33,7 @@ if ! [[ $1 = "--no-upgrade" ]]; then
 fi
 
 #Abhängigkeiten installieren
-apt-get install -yq htop nano nload zip screen python sysbench fio
+apt-get install -yq htop nano nload zip screen python sysbench fio gcc libgl1-mesa-dev libxext-dev perl perl-modules make git
 
 #Temp Ordner erstellen
 ordner=$(readlink -f "$0" | rev | cut -d"/" -f2- | rev)
@@ -64,3 +64,8 @@ while [ $round -lt 5 ]; do
 	hdparm -tT --direct $mount >> hdparm.log
 	round=$(( $round + 1 ))
 done
+
+#Unixbench
+git clone https://github.com/kdlucas/byte-unixbench.git
+cd byte-unixbench/UnixBench/
+./Run >> unixbench.log
