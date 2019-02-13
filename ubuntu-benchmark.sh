@@ -19,8 +19,13 @@ if ! [[ $1 = "--no-upgrade" ]]; then
 	apt-get update
 	apt-get upgrade -yq
 	apt-get dist-upgrade -yq
+	#Screen für Crontab installieren
+	apt-get install -yq screen
 	if [ -e /var/run/reboot-required ]; then
-		echo "@reboot root XX" > /etc/cron.d/ubuntu-benchmark
+		echo "@reboot root screen -AmdS ubuntu-benchmark bash $(readlink -f "$0")" > /etc/cron.d/ubuntu-benchmark
+		echo ""
+		echo "Server wird rebootet, Benchmark wird nach Reboot automatisch im Screen weitergeführt"
+		echo -e "Screen abrufbar mit dem Befehl \033[36mscreen -r ubuntu-benchmark\033[0m"
 		reboot
 	else
 		rm -f /etc/cron.d/ubuntu-benchmark
