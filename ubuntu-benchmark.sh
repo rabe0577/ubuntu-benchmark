@@ -14,9 +14,9 @@ if ! [ $1 = "--no-upgrade" ]; then
 fi
 
 #Updates installieren und ggf reboot
-apt-get update
 if ! [ $1 = "--no-upgrade" ]; then
 	export DEBIAN_FRONTEND=noninteractive
+	apt-get update
 	apt-get upgrade -yq
 	apt-get dist-upgrade -yq
 	if [ -e /var/run/reboot-required ]; then
