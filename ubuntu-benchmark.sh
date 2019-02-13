@@ -1,15 +1,17 @@
 #!/bin/bash
 
 #Warnmeldung und Sleep
-echo ""
-echo -e "\033[31m\033[4mDer Server wird geupgradet und eventuell rebootet\033[0m"
-echo -e "Ausführung ohne Upgrade mit Option \033[36m--no-upgrade\033[0m"
-echo ""
-for i in {10..1}; do
-	echo -en "\rAbbruch noch $i Sekunden möglich "
-	sleep 1
-done
-echo -en "\n"
+if ! [ $1 = "--no-upgrade" ]; then
+	echo ""
+	echo -e "\033[31m\033[4mDer Server wird geupgradet und eventuell rebootet\033[0m"
+	echo -e "Ausführung ohne Upgrade mit Option \033[36m--no-upgrade\033[0m"
+	echo ""
+	for i in {10..1}; do
+		echo -en "\rAbbruch noch $i Sekunden möglich "
+		sleep 1
+	done
+	echo -en "\n"
+fi
 
 #Updates installieren und ggf reboot
 apt-get update
