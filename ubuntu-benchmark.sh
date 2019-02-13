@@ -33,7 +33,7 @@ if ! [[ $1 = "--no-upgrade" ]]; then
 fi
 
 #Abhängigkeiten installieren
-apt-get install -yq htop nano nload zip screen python sysbench
+apt-get install -yq htop nano nload zip screen python sysbench fio
 
 #Temp Ordner erstellen
 ordner=$(readlink -f "$0" | rev | cut -d"/" -f2- | rev)
@@ -56,3 +56,11 @@ done
 
 #Ram Test
 sysbench --test=memory --num-threads=1 --memory-block-size=1M --memory-total-size=10000G run > sysbench_memory_test.log
+
+#Festplatten Test
+mount=`df -h / | tail -n +2 | cut -d" " -f1`
+round=0
+while [ $round -lt 5 ]; do
+	hdparm -tT --direct $mount >> hdparm.log
+	round=$(( $round + 1 ))
+done
