@@ -17,8 +17,8 @@ fi
 apt-get update
 if ! [ $1 = "--no-upgrade" ]; then
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get upgrade -yp
-	apt-get dist-upgrade -yp
+	apt-get upgrade -yq
+	apt-get dist-upgrade -yq
 	if [ -e /var/run/reboot-required ]; then
 		echo "@reboot root XX" > /etc/cron.d/ubuntu-benchmark
 		reboot
@@ -28,4 +28,4 @@ if ! [ $1 = "--no-upgrade" ]; then
 fi
 
 #Abhängigkeiten installieren
-apt-get install -yp htop nano nload zip screen python
+apt-get install -yq htop nano nload zip screen python
