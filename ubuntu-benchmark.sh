@@ -33,7 +33,7 @@ if ! [[ $1 = "--no-upgrade" ]]; then
 fi
 
 #Abhängigkeiten installieren
-apt-get install -yq htop nano nload zip screen python
+apt-get install -yq htop nano nload zip screen python sysbench
 
 #Temp Ordner erstellen
 ordner=$(readlink -f "$0" | rev | cut -d"/" -f2- | rev)
@@ -53,3 +53,6 @@ done
 for server in $speedserver; do
 	./speedtest-cli --csv --csv-delimiter ";" --no-download --server $server >> speedtest_upload.log
 done
+
+#Ram Test
+sysbench --test=memory --num-threads=1 --memory-block-size=1M --memory-total-size=10000G run > sysbench_memory_test.log
